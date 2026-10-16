@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Fotos Aleatorias</title>
+
+<style>
+body{
+    margin:0;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    overflow:hidden;
+    cursor:pointer;
+}
+
+img{
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+
+#selector{
+    position:fixed;
+    top:10px;
+    left:10px;
+    z-index:1000;
+}
+</style>
+</head>
+
+<body>
+
+<input type="file" id="selector" multiple accept="image/*">
+
+<img id="foto">
+
+<script>
+
+let fotos = [];
+let disponibles = [];
+
+document.getElementById("selector").addEventListener("change", function(e){
+
+    fotos = Array.from(e.target.files);
+    disponibles = [...fotos];
+
+    mostrarFoto();
+});
+
+function mostrarFoto(){
+
+    if(disponibles.length === 0){
+        disponibles = [...fotos];
+    }
+
+    const indice = Math.floor(Math.random() * disponibles.length);
+
+    const archivo = disponibles[indice];
+
+    disponibles.splice(indice,1);
+
+    document.getElementById("foto").src =
+        URL.createObjectURL(archivo);
+}
+
+document.body.addEventListener("click", function(){
+
+    if(fotos.length > 0){
+        mostrarFoto();
+    }
+
+});
+
+</script>
+
+</body>
+</html>
